@@ -39,6 +39,8 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import CalcHike from '@/components/commons/calcHike';
+import CheckDiagnosis from "@/components/commons/checkDiagnosis";
+import {addToStorage} from "@/components/commons/localStorage";
 
 export default {
   name: "TheModalForm",
@@ -46,8 +48,11 @@ export default {
     fullName: '',
     diagnos: '',
     date: '',
-    period: '',
-    survey: '',
+    period: {
+      doctorExam: 0,
+      surveys: 0,
+    },
+    survey: null,
 
 
   }),
@@ -60,72 +65,21 @@ export default {
       const diagnos = {
         value: this.diagnos
       }
-      this.checkDiagnos();
-
-      const arraySeasons = CalcHike.call(this,this.date, this.period);
-      this.setDataRow([fullName, diagnos,...arraySeasons]);
+      CheckDiagnosis.call(this);
+      const arraySeasons = CalcHike.call(this, this.date, this.period, this.survey);
+      this.setDataRow([fullName, diagnos, ...arraySeasons]);
       this.setRow(this.getRowData);
+      addToStorage({key: 'patients', value: this.getRow })
       this.setModalVisible(false);
     },
     closeModal() {
       this.setModalVisible(false);
     },
-    checkDiagnos() {
-      switch (this.diagnos) {
-        case 'АГ':
-          console.log('АГ')
-          break;
-        case 'Пневмония':
-          console.log('Пневмония')
-          break;
-        case 'Хронический Тонзиллит':
-          console.log('Хронический Тонзиллит')
-          break;
-        case 'БА':
-          console.log('БА')
-          break;
-        case 'Гастрит':
-          console.log('Гастрит')
-          break;
-        case 'ЯБ':
-          console.log('ЯБ')
-          break;
-        case 'Ожирение':
-          console.log('Ожирение')
-          break;
-        case 'Пиелонефрит':
-          console.log('Пиелонефрит')
-          break;
-        case 'Анемия':
-          console.log('Анемия')
-          break;
-        case 'Геморрой':
-          console.log('Геморрой')
-          break;
-        case 'Варикоз':
-          console.log('Варикоз')
-          break;
-        case 'МКБ':
-          console.log('МКБ')
-          break;
-        case 'Хронический Гастрит':
-          console.log('Хронический Гастрит')
-          break;
-        case 'Хронический отит':
-          console.log('Хронический отит')
-          break;
-        case 'ИБС':
-          console.log('ИБС')
-          this.period = 3;
-          this.survey = 'ЭКГ с физнагрузкой, ОАК, ОАМ, БАК, ЭХО-КГ';
-          break;
 
-      }
-    },
 
   },
   computed: {
-    ...mapGetters(['getRowData'])
+    ...mapGetters(['getRowData', 'getRow'])
   }
 }
 </script>
