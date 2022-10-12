@@ -13,6 +13,7 @@
       v-for="(row, index) in getRow"
       :key="row"
       :id="index"
+      @click="deleteRow(index)"
     >
       <td
         v-for="(token, index) in row"
@@ -26,20 +27,24 @@
   <button
     class="btn-add-row"
     @click="addNewRow"
-  >Добавить новую строку</button>
-  <the-modal-form v-if="getModal"></the-modal-form>
+  >Добавить новую строку
+  </button>
+  <the-modal-form v-if="getModal.form"></the-modal-form>
+  <the-modal-warning text="Вы действительно хотите удалить строчку?" v-if="getModal.warning"></the-modal-warning>
 
 
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import TheModalForm from "@/components/TheModalForm";
+import TheModalWarning from "@/components/TheModalWarning";
 
 export default {
   name: "TheTable",
   components: {
-    TheModalForm
+    TheModalForm,
+    TheModalWarning
   },
 
   data: () => ({
@@ -61,10 +66,13 @@ export default {
     ],
   }),
   methods: {
-    ...
-      mapActions(['setModalVisible']),
+    ...mapActions(['setModalVisible', 'setCurrentIndex']),
     addNewRow() {
-      this.setModalVisible(true);
+      this.setModalVisible({value: true, name: 'form'});
+    },
+    deleteRow(idx) {
+      this.setModalVisible({value: true, name: 'warning'});
+      this.setCurrentIndex(idx);
     }
   }
   ,
@@ -106,7 +114,7 @@ export default {
   background-color: white;
   color: black;
   border-top: none;
-  border-radius: 0 0 5px 5px;
+  //border-radius: 0 0 5px 5px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 

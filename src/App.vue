@@ -1,21 +1,32 @@
 <template>
   <div class="app">
+    <h1>Таблица диспансеризации 2023</h1>
     <the-table></the-table>
+    <button @click="openListDiseases" class="btn-open">Список заболеваний</button>
+    <the-list-diseases v-if="getModal.listDiseases"></the-list-diseases>
   </div>
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import TheTable from '@/components/TheTable';
+import TheListDiseases from "@/components/TheListDiseases";
 import {getFromStorage} from "@/components/commons/localStorage";
 
 export default {
   name: 'App',
   components: {
-    TheTable
+    TheTable,
+    TheListDiseases
+  },
+  computed: {
+    ...mapGetters(['getModal'])
   },
   methods: {
-    ...mapActions(['setRow'])
+    ...mapActions(['setRow', 'setModalVisible']),
+    openListDiseases() {
+      this.setModalVisible({value: true, name: 'listDiseases'})
+    }
   },
   mounted() {
     if (getFromStorage('patients')) {
@@ -26,6 +37,24 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+h1 {
+  text-align: center;
+}
+.btn-open {
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 
+  &:hover {
+    background-color: grey;
+    color: white;
+  }
+
+}
 </style>
