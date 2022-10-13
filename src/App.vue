@@ -1,29 +1,27 @@
 <template>
-  <div class="app">
-    <h1>Таблица диспансеризации 2023</h1>
-    <the-table></the-table>
-    <button @click="openListDiseases" class="btn-open">Список заболеваний</button>
-    <the-list-diseases v-if="getModal.listDiseases"></the-list-diseases>
-  </div>
+  <h1>Таблица диспансеризации 2023</h1>
+  <Table />
+  <button @click="openListDiseases" class="btn-open">Список заболеваний</button>
+  <ListDiseases v-if="getModal.listDiseases" />
 </template>
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import TheTable from '@/components/TheTable';
-import TheListDiseases from "@/components/TheListDiseases";
-import {getFromStorage} from "@/components/commons/localStorage";
+import Table from '@/components/Table';
+import ListDiseases from "@/components/ListDiseases";
+import { getFromStorage } from "@/components/common/helpers/localStorage";
 
 export default {
   name: 'App',
   components: {
-    TheTable,
-    TheListDiseases
+    Table,
+    ListDiseases
   },
   computed: {
-    ...mapGetters(['getModal'])
+    ...mapGetters('DiseasesModule', ['getModal'])
   },
   methods: {
-    ...mapActions(['setRow', 'setModalVisible']),
+    ...mapActions('DiseasesModule', ['setRow', 'setModalVisible']),
     openListDiseases() {
       this.setModalVisible({value: true, name: 'listDiseases'})
     }

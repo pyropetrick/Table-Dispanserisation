@@ -5,7 +5,8 @@
         v-for="head in headingNames"
         :key="head"
         class="table__heading"
-      > {{ head }}
+      >
+        {{ head }}
       </th>
     </tr>
     <tr
@@ -20,31 +21,32 @@
         :key="token"
         :id="index"
         class="table__slot"
-      >{{ token.value }}
+      >
+        {{ token.value }}
       </td>
     </tr>
   </table>
   <button
     class="btn-add-row"
     @click="addNewRow"
-  >Добавить новую строку
+  >
+    Добавить новую строку
   </button>
-  <the-modal-form v-if="getModal.form"></the-modal-form>
-  <the-modal-warning text="Вы действительно хотите удалить строчку?" v-if="getModal.warning"></the-modal-warning>
-
-
+  <ModalForm v-if="getModal.form" />
+  <ModalWarning text="Вы действительно хотите удалить строчку?" v-if="getModal.warning" />
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
-import TheModalForm from "@/components/TheModalForm";
-import TheModalWarning from "@/components/TheModalWarning";
+import { mapActions, mapGetters } from 'vuex';
+import ModalForm from "@/components/ModalForm.vue";
+import ModalWarning from "@/components/ModalWarning.vue";
 
 export default {
-  name: "TheTable",
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Table",
   components: {
-    TheModalForm,
-    TheModalWarning
+    ModalForm,
+    ModalWarning
   },
 
   data: () => ({
@@ -66,18 +68,18 @@ export default {
     ],
   }),
   methods: {
-    ...mapActions(['setModalVisible', 'setCurrentIndex']),
+    ...mapActions('DiseasesModule', ['setModalVisible', 'setCurrentIndex']),
     addNewRow() {
-      this.setModalVisible({value: true, name: 'form'});
+      this.setModalVisible({ value: true, name: 'form' });
     },
     deleteRow(idx) {
-      this.setModalVisible({value: true, name: 'warning'});
+      this.setModalVisible({ value: true, name: 'warning' });
       this.setCurrentIndex(idx);
     }
   }
   ,
   computed: {
-    ...mapGetters(['getModal', 'getRow'])
+    ...mapGetters('DiseasesModule', ['getModal', 'getRow'])
   }
 }
 </script>

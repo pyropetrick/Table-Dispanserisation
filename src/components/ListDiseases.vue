@@ -1,5 +1,5 @@
 <template>
-  <the-modal>
+  <ModalDialog>
     <table class="list-diseases">
       <tr>
         <th>
@@ -14,13 +14,19 @@
         <td class="list-diseases__disease">{{ disease }}</td>
       </tr>
     </table>
-  </the-modal>
+  </ModalDialog>
 </template>
 
 <script>
+import ModalDialog from '@/components/common/ModalDialog';
 
 export default {
-  name: "TheListDiseases",
+  name: "ListDiseases",
+
+  components: {
+    ModalDialog,
+  },
+
   data: () => ({
     listDiseases: [
       'АГ',

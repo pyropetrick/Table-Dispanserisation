@@ -3,20 +3,20 @@
     <div
       class="modal__background"
       @click="closeModal"
-    ></div>
+    />
     <div class="modal">
-      <slot></slot>
+      <slot />
     </div>
   </teleport>
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
 
 export default {
-  name: "TheModal",
+  name: "ModalDialog",
   methods: {
-    ...mapActions(['setModalVisible']),
+    ...mapActions('DiseasesModule', ['setModalVisible']),
     closeModal() {
       this.setModalVisible({value: false, name: ['form', 'warning', 'listDiseases']});
     },
