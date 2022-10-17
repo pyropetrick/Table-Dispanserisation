@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Таблица диспансеризации 2023</h1>
+    <h1>Таблица диспансеризации 2023-test</h1>
     <Table />
     <ListDiseases ref="listDiseasesRef" />
   </div>
@@ -34,3 +34,4 @@ h1 {
   text-align: center;
 }
 </style>
+
