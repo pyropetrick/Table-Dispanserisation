@@ -1,37 +1,32 @@
 <template>
-  <ModalDialog>
+  <the-modal>
     <p class="modal__text">{{ text }}</p>
-    <template #actions>
-      <div class="modal__btns">
-        <button class="modal__btn-delete btn" @click="deleteThisRow">Delete</button>
-      </div>
-    </template>
-  </ModalDialog>
+    <div class="modal__btns">
+      <button class="modal__btn-cancel btn" @click="closeModal">Cancel</button>
+      <button class="modal__btn-delete btn" @click="deleteThisRow">Delete</button>
+    </div>
+  </the-modal>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import ModalDialog from '@/components/common/ModalDialog';
-import { addToStorage } from "@/components/common/helpers/localStorage";
+import {mapActions, mapGetters} from "vuex";
+import {addToStorage} from "@/components/commons/localStorage";
 
 export default {
-  name: "ModalWarning",
-
-  components: {
-    ModalDialog,
-  },
-
-  props: {
-    text: String,
-  },
+  name: "TheModalWarning",
+  props: ['text'],
   computed: {
-    ...mapGetters('DiseasesModule', ['getCurrentIndex', "getRow"])
+    ...mapGetters(['getCurrentIndex', "getRow"])
   },
   methods: {
-    ...mapActions('DiseasesModule', ['deleteRow']),
+    ...mapActions(['setModalVisible', 'deleteRow']),
+    closeModal() {
+      this.setModalVisible({value: false, name: 'warning'});
+    },
     deleteThisRow() {
       this.deleteRow(this.getCurrentIndex);
       addToStorage({key:'patients',value:this.getRow})
+      this.closeModal();
     }
   }
 }

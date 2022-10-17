@@ -1,5 +1,5 @@
 <template>
-  <ModalDialog>
+  <the-modal>
     <input
       type="text"
       name="fullName"
@@ -24,25 +24,20 @@
     <button
       class="modal__btn-add"
       @click="addNewHuman"
-    >
-      Добавить человека
+    >Добавить человека
     </button>
-  </ModalDialog>
+  </the-modal>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import CalcHike from '@/components/common/helpers/calcHike';
-import CheckDiagnosis from "@/components/common/helpers/checkDiagnosis";
-import { addToStorage } from "@/components/common/helpers/localStorage";
-import ModalDialog from '@/components/common/ModalDialog';
+import {mapActions, mapGetters} from "vuex";
+import CalcHike from '@/components/commons/calcHike';
+import CheckDiagnosis from "@/components/commons/checkDiagnosis";
+import {addToStorage} from "@/components/commons/localStorage";
 
 export default {
   name: "TheModalForm",
-
-  components: {
-    ModalDialog
-  },
+  components: {},
 
   data: () => ({
     fullName: '',
@@ -53,11 +48,11 @@ export default {
       surveys: 0,
     },
     survey: null,
+
+
   }),
-
   methods: {
-    ...mapActions('DiseasesModule', ['setDataRow', 'setRow']),
-
+    ...mapActions(['setModalVisible', 'setDataRow', 'setRow']),
     addNewHuman() {
       const fullName = {
         value: this.fullName
@@ -70,10 +65,12 @@ export default {
       this.setDataRow([fullName, diagnos, ...arraySeasons]);
       this.setRow(this.getRowData);
       addToStorage({key: 'patients', value: this.getRow})
+      this.setModalVisible({value: false, name: 'form'});
     },
+
   },
   computed: {
-    ...mapGetters('DiseasesModule', ['getRowData', 'getRow'])
+    ...mapGetters(['getRowData', 'getRow'])
   }
 }
 </script>
