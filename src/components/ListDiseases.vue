@@ -1,26 +1,35 @@
 <template>
-  <the-modal>
-    <table class="list-diseases">
-      <tr>
-        <th>
-          Название заболеваний
-        </th>
-      </tr>
-      <tr
-        v-for="disease in listDiseases"
-        :key="disease"
-        class="list-diseases__row"
-      >
-        <td class="list-diseases__disease">{{ disease }}</td>
-      </tr>
-    </table>
-  </the-modal>
+  <div>
+    <button @click="openListDiseases" class="btn-open">Список заболеваний</button>
+    <ModalDialog ref="modalDialogRef">
+      <table class="list-diseases">
+        <tr>
+          <th>
+            Название заболеваний
+          </th>
+        </tr>
+        <tr
+            v-for="disease in listDiseases"
+            :key="disease"
+            class="list-diseases__row"
+        >
+          <td class="list-diseases__disease">{{ disease }}</td>
+        </tr>
+      </table>
+    </ModalDialog>
+  </div>
 </template>
 
 <script>
+import ModalDialog from '@/components/common/ModalDialog';
 
 export default {
-  name: "TheListDiseases",
+  name: "ListDiseases",
+
+  components: {
+    ModalDialog,
+  },
+
   data: () => ({
     listDiseases: [
       'АГ',
@@ -47,8 +56,13 @@ export default {
       'ИБС',
       'Хронический аллергический риносинусит'
     ]
-
   }),
+
+  methods: {
+    openListDiseases() {
+      this.$refs.modalDialogRef.showModal();
+    }
+  },
 }
 </script>
 
