@@ -1,11 +1,24 @@
-# Table dispansery
+# screening-vue2
 
-## Description
+## Project setup
+```
+npm install
+```
 
-Таблица для постановки на диспансерный учет пациентов 
-с хроническими заболеваниями на 22-23 год.
-При вводе данных(заболевание, ФИО, дата постановки на учет)
-рассчитывается когда необходимо явиться пациенту на прием и указывает
-какие анализы, обследования необходимо пройти.
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-В стадии разработки...
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
