@@ -1,32 +1,34 @@
 <template>
-  <the-modal>
+  <ModalDialog>
     <p class="modal__text">{{ text }}</p>
-    <div class="modal__btns">
-      <button class="modal__btn-cancel btn" @click="closeModal">Cancel</button>
-      <button class="modal__btn-delete btn" @click="deleteThisRow">Delete</button>
-    </div>
-  </the-modal>
+    <template #actions>
+      <div class="modal__btns">
+        <button class="modal__btn-delete btn" @click="deleteThisRow">Delete</button>
+      </div>
+    </template>
+  </ModalDialog>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import {addToStorage} from "@/components/commons/localStorage";
-
+import { mapActions, mapGetters } from "vuex";
+import ModalDialog from '@/components/common/ModalDialog';
+import { addToStorage } from "@/components/common/helpers/localStorage";
 export default {
-  name: "TheModalWarning",
-  props: ['text'],
+  name: "ModalWarning",
+  components: {
+    ModalDialog,
+  },
+  props: {
+    text: String,
+  },
   computed: {
-    ...mapGetters(['getCurrentIndex', "getRow"])
+    ...mapGetters('DiseasesModule', ['getCurrentIndex', "getRow"])
   },
   methods: {
-    ...mapActions(['setModalVisible', 'deleteRow']),
-    closeModal() {
-      this.setModalVisible({value: false, name: 'warning'});
-    },
+    ...mapActions('DiseasesModule', ['deleteRow']),
     deleteThisRow() {
       this.deleteRow(this.getCurrentIndex);
       addToStorage({key:'patients',value:this.getRow})
-      this.closeModal();
     }
   }
 }
@@ -41,7 +43,6 @@ export default {
     color: #251c1c;
     font-weight: bold;
   }
-
   &__btns {
     display: flex;
     align-items: center;
@@ -49,14 +50,12 @@ export default {
     gap: 10px;
     padding: 5px 0;
   }
-
   &__btn-delete {
     &:hover {
       background-color: #f16c89;
       color: white;
     }
   }
-
   &__btn-cancel {
     &:hover {
       background-color: #424c82;
@@ -64,7 +63,6 @@ export default {
     }
   }
 }
-
 .btn {
   padding: 5px;
   border-radius: 5px;

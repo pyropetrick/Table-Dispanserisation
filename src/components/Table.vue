@@ -1,52 +1,55 @@
 <template>
-  <table class="table">
-    <tr>
-      <th
-        v-for="head in headingNames"
-        :key="head"
-        class="table__heading"
-      > {{ head }}
-      </th>
-    </tr>
-    <tr
-      class="table__row"
-      v-for="(row, index) in getRow"
-      :key="row"
-      :id="index"
-      @click="deleteRow(index)"
-    >
-      <td
-        v-for="(token, index) in row"
-        :key="token"
+  <div>
+    <table class="table">
+      <tr>
+        <th
+          v-for="head in headingNames"
+          :key="head"
+          class="table__heading"
+        >
+          {{ head }}
+        </th>
+      </tr>
+      <tr
+        class="table__row"
+        v-for="(row, index) in getRow"
+        :key="row"
         :id="index"
-        class="table__slot"
-      >{{ token.value }}
-      </td>
-    </tr>
-  </table>
-  <button
-    class="btn-add-row"
-    @click="addNewRow"
-  >Добавить новую строку
-  </button>
-  <the-modal-form v-if="getModal.form"></the-modal-form>
-  <the-modal-warning text="Вы действительно хотите удалить строчку?" v-if="getModal.warning"></the-modal-warning>
-
-
+        @click="deleteRow(index)"
+      >
+        <td
+          v-for="(token, index) in row"
+          :key="token"
+          :id="index"
+          class="table__slot"
+        >
+          {{ token.value }}
+        </td>
+      </tr>
+    </table>
+    <button
+      class="btn-add-row"
+      @click="addNewRow"
+    >
+      Добавить новую строку
+    </button>
+    <ModalForm/>
+    <ModalWarning text="Вы действительно хотите удалить строчку?"/>
+  </div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
-import TheModalForm from "@/components/TheModalForm";
-import TheModalWarning from "@/components/TheModalWarning";
+import ModalForm from "@/components/ModalForm.vue";
+import ModalWarning from "@/components/ModalWarning.vue";
 
 export default {
-  name: "TheTable",
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Table",
   components: {
-    TheModalForm,
-    TheModalWarning
+    ModalForm,
+    ModalWarning
   },
-
   data: () => ({
     headingNames: [
       'ФИО',
@@ -66,24 +69,21 @@ export default {
     ],
   }),
   methods: {
-    ...mapActions(['setModalVisible', 'setCurrentIndex']),
-    addNewRow() {
-      this.setModalVisible({value: true, name: 'form'});
-    },
+    ...mapActions('DiseasesModule', ['setCurrentIndex']),
     deleteRow(idx) {
-      this.setModalVisible({value: true, name: 'warning'});
       this.setCurrentIndex(idx);
-    }
+    },
+    addNewRow() {
+    },
   }
   ,
   computed: {
-    ...mapGetters(['getModal', 'getRow'])
+    ...mapGetters('DiseasesModule', ['getRow'])
   }
 }
 </script>
 
 <style scoped lang="scss">
-
 .table {
   width: 100%;
   border: 1px solid black;
@@ -122,7 +122,5 @@ export default {
     background-color: grey;
     color: white;
   }
-
 }
-
 </style>

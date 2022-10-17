@@ -1,5 +1,5 @@
 <template>
-  <the-modal>
+  <ModalDialog>
     <input
       type="text"
       name="fullName"
@@ -24,21 +24,23 @@
     <button
       class="modal__btn-add"
       @click="addNewHuman"
-    >Добавить человека
+    >
+      Добавить человека
     </button>
-  </the-modal>
+  </ModalDialog>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import CalcHike from '@/components/commons/calcHike';
-import CheckDiagnosis from "@/components/commons/checkDiagnosis";
-import {addToStorage} from "@/components/commons/localStorage";
-
+import { mapActions, mapGetters } from "vuex";
+import CalcHike from '@/components/common/helpers/calcHike';
+import CheckDiagnosis from "@/components/common/helpers/checkDiagnosis";
+import { addToStorage } from "@/components/common/helpers/localStorage";
+import ModalDialog from '@/components/common/ModalDialog';
 export default {
   name: "TheModalForm",
-  components: {},
-
+  components: {
+    ModalDialog
+  },
   data: () => ({
     fullName: '',
     diagnos: '',
@@ -48,11 +50,9 @@ export default {
       surveys: 0,
     },
     survey: null,
-
-
   }),
   methods: {
-    ...mapActions(['setModalVisible', 'setDataRow', 'setRow']),
+    ...mapActions('DiseasesModule', ['setDataRow', 'setRow']),
     addNewHuman() {
       const fullName = {
         value: this.fullName
@@ -65,36 +65,29 @@ export default {
       this.setDataRow([fullName, diagnos, ...arraySeasons]);
       this.setRow(this.getRowData);
       addToStorage({key: 'patients', value: this.getRow})
-      this.setModalVisible({value: false, name: 'form'});
     },
-
   },
   computed: {
-    ...mapGetters(['getRowData', 'getRow'])
+    ...mapGetters('DiseasesModule', ['getRowData', 'getRow'])
   }
 }
 </script>
 
 <style scoped lang="scss">
-
 .modal {
   &__input {
     padding: 10px;
     border: none;
     border-bottom: 1px solid grey;
-
     &:focus-visible {
       outline: none;
     }
-
   }
-
   &__btn-add {
     padding: 10px;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     border: none;
-
     &:hover {
       background-color: grey;
       color: white;
