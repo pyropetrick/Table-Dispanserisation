@@ -7,24 +7,31 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import Table from '@/components/Table';
-import ListDiseases from "@/components/ListDiseases";
-import { getFromStorage } from "@/components/common/helpers/localStorage";
+import {mapActions, mapGetters} from "vuex";
+import TheTable from '@/components/TheTable';
+import TheListDiseases from "@/components/TheListDiseases";
+import {getFromStorage} from "@/components/commons/localStorage";
 
 export default {
   name: 'App',
   components: {
-    Table,
-    ListDiseases
+    TheTable,
+    TheListDiseases
+  },
+  computed: {
+    ...mapGetters(['getModal'])
   },
   methods: {
-    ...mapActions('DiseasesModule', ['setRow']),
+    ...mapActions(['setRow', 'setModalVisible']),
+    openListDiseases() {
+      this.setModalVisible({value: true, name: 'listDiseases'})
+    }
   },
   mounted() {
     if (getFromStorage('patients')) {
       getFromStorage('patients').forEach(patient => this.setRow(patient))
     }
+
   }
 }
 </script>
@@ -32,6 +39,22 @@ export default {
 <style lang="scss" scoped>
 h1 {
   text-align: center;
+}
+.btn-open {
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: grey;
+    color: white;
+  }
+
 }
 </style>
 

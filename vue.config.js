@@ -1,9 +1,5 @@
-const { defineConfig } = require('@vue/cli-service');
-// const path = require('path');
-
+const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
-  // alias: {
-  //   '@': path.join(__dirname, './src')
-  // }
+  publicPath: process.env.NODE_ENV === 'production' ? '/table-screening' : '/'
 })
