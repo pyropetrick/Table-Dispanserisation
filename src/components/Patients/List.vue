@@ -33,21 +33,21 @@
     >
       Добавить новую строку
     </button>
-    <ModalForm/>
+
+    <ManagePatients />
     <ModalWarning text="Вы действительно хотите удалить строчку?"/>
   </div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
-import ModalForm from "@/components/ModalForm.vue";
+import ManagePatients from "@/components/Patients/components/ManagePatients.vue";
 import ModalWarning from "@/components/ModalWarning.vue";
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: "Table",
+  name: "PatientsList",
   components: {
-    ModalForm,
+    ManagePatients,
     ModalWarning
   },
   data: () => ({
@@ -69,7 +69,7 @@ export default {
     ],
   }),
   methods: {
-    ...mapActions('DiseasesModule', ['setCurrentIndex']),
+    ...mapActions('PatientsModule', ['setCurrentIndex']),
     deleteRow(idx) {
       this.setCurrentIndex(idx);
     },
@@ -78,49 +78,7 @@ export default {
   }
   ,
   computed: {
-    ...mapGetters('DiseasesModule', ['getRow'])
+    ...mapGetters('PatientsModule', ['getRow'])
   }
 }
 </script>
-
-<style scoped lang="scss">
-.table {
-  width: 100%;
-  border: 1px solid black;
-  border-spacing: 0;
-  text-align: center;
-  border-collapse: collapse;
-  height: auto;
-  font-weight: normal;
-  font-size: 0.875rem;
-
-  &__heading {
-    border: 1px solid black;
-    padding: 5px;
-  }
-
-  &__slot {
-    border: 1px solid black;
-    min-height: 35px;
-    padding: 3px;
-    width: 30px;
-    height: 35px;
-  }
-}
-
-.btn-add-row {
-  width: 100%;
-  padding: 10px;
-  background-color: white;
-  color: black;
-  border-top: none;
-  //border-radius: 0 0 5px 5px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-
-  &:hover {
-    background-color: grey;
-    color: white;
-  }
-}
-</style>
