@@ -24,9 +24,7 @@ function getYearExams(month, year, period, arr, end = 48) {
 
     if (year === 23) {
       numberExams.push(number);
-
     }
-
   }
   return arr.push(numberExams)
 }
@@ -46,7 +44,7 @@ function getSeasonsExam(year, seasons, exam) {
   return seasons;
 }
 
-export default function (date, {doctorExam, surveys, end}, {everySurvey, everyExam}) {
+export default function (date, { period: { doctorExam, surveys, end }, survey: { everySurvey, everyExam } }) {
   const year23 = [];
   const dataArray = date.split('.');
   let month = +dataArray[0];
@@ -59,7 +57,6 @@ export default function (date, {doctorExam, surveys, end}, {everySurvey, everyEx
       item.value += ` , ${everySurvey}`
     }
   });
-
 
   return arraySeasons;
 }

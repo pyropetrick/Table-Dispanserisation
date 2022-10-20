@@ -1,5 +1,5 @@
 <template>
-  <ModalDialog>
+  <b-modal ref="modalRef" hide-footer>
     <input
         type="text"
         v-model="fullName"
@@ -16,15 +16,16 @@
         placeholder="Введите Месяц.Год(формат - 07.22) постановки на учет"
     >
 
-    <template #actions>
+    <div class="btn-group">
+      <button class="btn btn-secondary" @click="hideModal">Cancel</button>
       <button
           class="btn btn-primary"
           @click="addNewHuman"
       >
         Добавить человека
       </button>
-    </template>
-  </ModalDialog>
+    </div>
+  </b-modal>
 </template>
 
 <script>
@@ -32,50 +33,74 @@ import { mapActions, mapGetters } from "vuex";
 import CalcHike from '@/components/common/helpers/calcHike';
 import CheckDiagnosis from "@/components/common/helpers/checkDiagnosis";
 import { addToStorage } from "@/components/common/helpers/localStorage";
-import ModalDialog from '@/components/common/ModalDialog';
 import Multiselect from 'vue-multiselect';
 import diseasesList from '@/components/common/constants/diseases';
 
 export default {
   name: "ManagePatients",
   components: {
-    ModalDialog,
     Multiselect
   },
 
   data: () => ({
     diseasesList,
-
     fullName: '',
     diagnos: '',
     date: '',
-    period: {
-      doctorExam: 0,
-      surveys: 0,
-    },
-    survey: null,
   }),
 
   methods: {
-    ...mapActions('PatientsModule', ['setDataRow', 'setRow']),
+    async init(initData) {
+      this.setInitData(initData)
+      this.showModal();
+    },
+
+    setInitData(data) {
+      if (!data) return;
+
+      const { fullName, diagnos, date } = data;
+      this.fullName = fullName;
+      this.diagnos = diagnos;
+      this.date = date;
+    },
+
+    showModal() {
+      this.$refs.modalRef.show();
+    },
+
+    hideModal () {
+      this.$refs.modalRef.hide();
+      this.reset();
+    },
+
+    reset() {
+      this.fullName = '';
+      this.diagnos = '';
+      this.date = '';
+    },
+
+
+    // ...mapActions('PatientsModule', ['setDataRow', 'setRow']),
 
     addNewHuman() {
-      const fullName = {
-        value: this.fullName
-      };
-      const diagnos = {
-        value: this.diagnos
-      }
-      CheckDiagnosis.call(this);
-      const arraySeasons = CalcHike.call(this, this.date, this.period, this.survey);
-      this.setDataRow([fullName, diagnos, ...arraySeasons]);
-      this.setRow(this.getRowData);
-      addToStorage({key: 'patients', value: this.getRow})
+      const checkedDiagnosData = CheckDiagnosis(this.diagnos);
+      const seasonsData = CalcHike(this.date, checkedDiagnosData);
+
+
+      console.log({ patient: this.formData, seasonsData });
+
+      // TODO: improve row set for table
+
+      // this.setDataRow([fullName, diagnos, ...arraySeasons]);
+      // this.setRow(this.getRowData);
+      // addToStorage({key: 'patients', value: this.getRow})
     },
   },
 
   computed: {
-    ...mapGetters('PatientsModule', ['getRowData', 'getRow'])
-  }
+    // ...mapGetters('PatientsModule', ['getRowData', 'getRow']),
+
+    formData: ({ fullName, diagnos, date }) => ({ fullName, diagnos, date }),
+  },
 }
 </script>

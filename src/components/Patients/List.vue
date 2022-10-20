@@ -1,84 +1,46 @@
 <template>
-  <div>
-    <table class="table">
-      <tr>
-        <th
-          v-for="head in headingNames"
-          :key="head"
-          class="table__heading"
-        >
-          {{ head }}
-        </th>
-      </tr>
-      <tr
-        class="table__row"
-        v-for="(row, index) in getRow"
-        :key="row"
-        :id="index"
-        @click="deleteRow(index)"
+  <div class="p-4">
+    <div class="d-flex justify-content-end mb-2">
+      <button
+          class="btn btn-primary "
+          @click="addPatient"
       >
-        <td
-          v-for="(token, index) in row"
-          :key="token"
-          :id="index"
-          class="table__slot"
-        >
-          {{ token.value }}
-        </td>
-      </tr>
-    </table>
-    <button
-      class="btn-add-row"
-      @click="addNewRow"
-    >
-      Добавить новую строку
-    </button>
+        Добавить пациента
+      </button>
+    </div>
+    <b-table striped hover :fields="columns" :items="items"></b-table>
 
-    <ManagePatients />
-    <ModalWarning text="Вы действительно хотите удалить строчку?"/>
+    <ManagePatients ref="managePatientsRef" />
+<!--    <ModalWarning text="Вы действительно хотите удалить строчку?"/>-->
   </div>
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import { columns } from '@/components/Patients/constants';
 import ManagePatients from "@/components/Patients/components/ManagePatients.vue";
-import ModalWarning from "@/components/ModalWarning.vue";
+// import ModalWarning from "@/components/common/ModalWarning.vue";
 
 export default {
   name: "PatientsList",
   components: {
     ManagePatients,
-    ModalWarning
+    // ModalWarning
   },
   data: () => ({
-    headingNames: [
-      'ФИО',
-      'Диагноз',
-      'Январь',
-      'Февраль',
-      'Март',
-      'Апрель',
-      'Май',
-      'Июнь',
-      'Июль',
-      'Август',
-      'Сентябрь',
-      'Октябрь',
-      'Ноябрь',
-      'Декабрь'
-    ],
+    columns,
   }),
   methods: {
     ...mapActions('PatientsModule', ['setCurrentIndex']),
-    deleteRow(idx) {
-      this.setCurrentIndex(idx);
+    deletePatient() {
+
     },
-    addNewRow() {
+    addPatient() {
     },
   }
   ,
   computed: {
-    ...mapGetters('PatientsModule', ['getRow'])
+    ...mapGetters('PatientsModule', ['items'])
   }
 }
 </script>
