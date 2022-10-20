@@ -36,6 +36,7 @@ export default {
 
     },
     addPatient() {
+      this.$refs.managePatientsRef.showModal()
     },
   }
   ,
