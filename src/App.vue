@@ -17,12 +17,12 @@ export default {
   },
 
   methods: {
-    ...mapActions('PatientsModule', ['setRow']),
+    ...mapActions('PatientsModule', ['addItemFromStorage']),
   },
 
   mounted() {
     if (getFromStorage('patients')) {
-      getFromStorage('patients').forEach(patient => this.setRow(patient))
+      getFromStorage('patients').forEach(patient => this.addItemFromStorage(patient))
     }
   }
 }

@@ -39,12 +39,14 @@ function getSeasonsExam(year, seasons, exam) {
       continue
     }
 
-    seasons.push({});
+    seasons.push({
+      value: '-'
+    });
   }
   return seasons;
 }
 
-export default function (date, { period: { doctorExam, surveys, end }, survey: { everySurvey, everyExam } }) {
+export default function (date, {period: {doctorExam, surveys, end}, survey: {everySurvey, everyExam}}) {
   const year23 = [];
   const dataArray = date.split('.');
   let month = +dataArray[0];

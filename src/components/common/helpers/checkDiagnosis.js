@@ -1,7 +1,6 @@
 export default function (diagnos) {
   const period = {
     doctorExam: 0,
-    end: 0,
     surveys: 0,
   };
   let survey = null;
