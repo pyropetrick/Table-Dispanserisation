@@ -1,25 +1,25 @@
 <template>
   <div>
     <h1>Таблица диспансеризации 2023</h1>
-    <Table />
-    <ListDiseases ref="listDiseasesRef" />
+    <PatientsList />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import Table from '@/components/Table';
-import ListDiseases from "@/components/ListDiseases";
+import PatientsList from '@/components/Patients/List.vue';
 import { getFromStorage } from "@/components/common/helpers/localStorage";
+
 export default {
   name: 'App',
   components: {
-    Table,
-    ListDiseases
+    PatientsList,
   },
+
   methods: {
-    ...mapActions('DiseasesModule', ['setRow']),
+    ...mapActions('PatientsModule', ['setRow']),
   },
+
   mounted() {
     if (getFromStorage('patients')) {
       getFromStorage('patients').forEach(patient => this.setRow(patient))
